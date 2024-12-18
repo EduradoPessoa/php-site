@@ -1,0 +1,16 @@
+.login-container {
+    margin-top: 5%;
+}
+
+.admin-sidebar {
+    min-height: calc(100vh - 56px);
+    background-color: #f8f9fa;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.table-responsive {
+    margin-bottom: 1rem;
+}
