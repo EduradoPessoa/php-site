@@ -80,14 +80,15 @@ Sua contribuição é muito bem-vinda! Aqui estão algumas formas de participar:
 
 ## 📚 Estrutura do Projeto
 ```php-learning-project/
-├── admin/ # Área administrativa
-├── config/ # Configurações do sistema
-├── data/ # Banco de dados SQLite
-├── includes/ # Arquivos compartilhados
-├── public/ # Arquivos públicos
-│ ├── assets/ # CSS, JS, imagens
-│ └── index.php # Ponto de entrada
-└── README.md # Este arquivo´´´
+    ├── admin/ # Área administrativa
+    ├── config/ # Configurações do sistema
+    ├── data/ # Banco de dados SQLite
+    ├── includes/ # Arquivos compartilhados
+    ├── public/ # Arquivos públicos
+    │ ├── assets/ # CSS, JS, imagens
+    │ └── index.php # Ponto de entrada
+    └── README.md # Este arquivo
+```
 
 ## 📖 Aprendizados Abordados
 
