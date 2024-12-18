@@ -34,6 +34,7 @@ Este é um projeto de aprendizagem colaborativo que implementa um sistema web co
 
 👤 **Credenciais do Admin**  
 Mude isso no programa php-site/config/database.php (linhas 32 e 33)
+
 Email: eduardo@phoenyx.com.br  
 Senha: 123456
 
@@ -78,7 +79,7 @@ Sua contribuição é muito bem-vinda! Aqui estão algumas formas de participar:
 - JavaScript
 
 ## 📚 Estrutura do Projeto
-php-learning-project/
+```php-learning-project/
 ├── admin/ # Área administrativa
 ├── config/ # Configurações do sistema
 ├── data/ # Banco de dados SQLite
@@ -86,7 +87,7 @@ php-learning-project/
 ├── public/ # Arquivos públicos
 │ ├── assets/ # CSS, JS, imagens
 │ └── index.php # Ponto de entrada
-└── README.md # Este arquivo
+└── README.md # Este arquivo´´´
 
 ## 📖 Aprendizados Abordados
 
