@@ -34,3 +34,11 @@
 2025-01-01 23:48:42 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 29
 2025-01-01 23:48:42 [8192] strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 29
 2025-01-01 23:48:42 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 92
+2025-01-02 00:22:07 [2] Undefined array key "user_email" in /home/epessoa/Documentos/Sistemas/php-site/includes/sidebar.php on line 27
+2025-01-02 00:22:07 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/includes/sidebar.php on line 27
+2025-01-02 00:33:06 [2] Undefined array key "user_email" in /home/epessoa/Documentos/Sistemas/php-site/includes/sidebar.php on line 27
+2025-01-02 00:33:06 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/includes/sidebar.php on line 27
+2025-01-02 00:33:09 [2] Undefined array key "user_email" in /home/epessoa/Documentos/Sistemas/php-site/includes/sidebar.php on line 27
+2025-01-02 00:33:09 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/includes/sidebar.php on line 27
+2025-01-02 00:33:28 [2] Undefined array key "user_email" in /home/epessoa/Documentos/Sistemas/php-site/includes/sidebar.php on line 27
+2025-01-02 00:33:28 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/includes/sidebar.php on line 27

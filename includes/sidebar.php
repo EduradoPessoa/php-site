@@ -2,6 +2,9 @@
 $currentFile = basename($_SERVER['PHP_SELF']);
 $currentDir = basename(dirname($_SERVER['PHP_SELF']));
 
+// Obtém o usuário atual
+$user = $auth->getCurrentUser();
+
 function isActive($file, $dir = null) {
     global $currentFile, $currentDir;
     if ($dir) {
@@ -23,8 +26,8 @@ function isExpanded($dirs) {
             <div class="d-flex align-items-center">
                 <i class="bi bi-person-circle fs-1 me-2"></i>
                 <div>
-                    <h6 class="mb-0"><?= htmlspecialchars($_SESSION['user_name']) ?></h6>
-                    <small class="text-muted"><?= htmlspecialchars($_SESSION['user_email']) ?></small>
+                    <h6 class="mb-0"><?= htmlspecialchars($user['name'] ?? 'Usuário') ?></h6>
+                    <small class="text-muted"><?= htmlspecialchars($user['email'] ?? '') ?></small>
                 </div>
             </div>
         </div>
@@ -38,12 +41,13 @@ function isExpanded($dirs) {
 
             <!-- Módulo de Compras -->
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#comprasSubmenu" 
-                   aria-expanded="<?= isExpanded(['products', 'suppliers', 'supplier-products', 'purchase-orders', 'invoices']) ?>">
-                    <i class="bi bi-cart3"></i> Compras <i class="bi bi-chevron-down float-end"></i>
+                <a class="nav-link <?= in_array($currentDir, ['products', 'suppliers', 'supplier-products', 'purchase-orders', 'invoices']) ? 'active' : '' ?>" 
+                   data-bs-toggle="collapse" href="#comprasSubmenu" 
+                   aria-expanded="<?= in_array($currentDir, ['products', 'suppliers', 'supplier-products', 'purchase-orders', 'invoices']) ? 'true' : 'false' ?>">
+                    <i class="bi bi-cart3"></i> Compras <i class="bi bi-chevron-down"></i>
                 </a>
                 <div class="collapse <?= isExpanded(['products', 'suppliers', 'supplier-products', 'purchase-orders', 'invoices']) ?>" id="comprasSubmenu">
-                    <ul class="nav flex-column ms-3">
+                    <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link <?= isActive('index.php', 'products') ?>" href="/products/">
                                 <i class="bi bi-box-seam"></i> Produtos
