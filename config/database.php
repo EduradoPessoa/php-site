@@ -12,19 +12,24 @@ try {
     $pdo = new PDO("sqlite:" . DB_PATH);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // Criar tabelas se não existirem
-    $pdo->exec("CREATE TABLE IF NOT EXISTS users (
+    // Remover tabelas existentes
+    $pdo->exec("DROP TABLE IF EXISTS users");
+    $pdo->exec("DROP TABLE IF EXISTS activity_logs");
+    $pdo->exec("DROP TABLE IF EXISTS password_resets");
+    
+    // Criar tabelas
+    $pdo->exec("CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         name TEXT NOT NULL,
         role TEXT NOT NULL DEFAULT 'user',
-        status INTEGER DEFAULT 0,
+        status INTEGER DEFAULT 1,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )");
 
-    $pdo->exec("CREATE TABLE IF NOT EXISTS activity_logs (
+    $pdo->exec("CREATE TABLE activity_logs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         action TEXT NOT NULL,
@@ -33,7 +38,7 @@ try {
         FOREIGN KEY (user_id) REFERENCES users(id)
     )");
 
-    $pdo->exec("CREATE TABLE IF NOT EXISTS password_resets (
+    $pdo->exec("CREATE TABLE password_resets (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         token TEXT NOT NULL,
