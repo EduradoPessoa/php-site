@@ -1,114 +1,147 @@
-# 🚀 PHP Learning Project
+# 🚀 Sistema de Gestão Empresarial
 
-Um projeto PHP moderno e educacional para aprender desenvolvimento web do zero, com foco em boas práticas e segurança.
+Sistema web moderno para gestão empresarial com múltiplos níveis de acesso, desenvolvido em PHP com foco em segurança e boas práticas.
 
 ## 📋 Sobre o Projeto
 
-Este é um projeto de aprendizagem colaborativo que implementa um sistema web com autenticação, controle de acesso e gerenciamento de usuários usando PHP puro. O objetivo é criar uma base sólida para aprender conceitos importantes de desenvolvimento web.
+Este sistema implementa uma plataforma completa de gestão empresarial com autenticação, controle de acesso baseado em papéis (RBAC) e gerenciamento de diferentes tipos de usuários.
 
-### 🎯 Funcionalidades Atuais
+### 🎯 Funcionalidades
 
-- 🔐 Sistema de autenticação seguro
-- 👥 Registro de novos usuários
-- 👮‍♂️ Aprovação de usuários por administradores
-- 🛡️ Controle de acesso baseado em papéis (RBAC)
-- 💾 Banco de dados SQLite (sem necessidade de configuração)
+#### Autenticação e Segurança
+- 🔐 Sistema de login seguro com proteção contra ataques
+- 🔑 Recuperação de senha via email
+- 🛡️ Proteção CSRF em formulários
+- ⚡ Rate limiting para prevenção de força bruta
+- 📝 Sistema de logs de atividades
 
-## 🚀 Como Começar
+#### Gestão de Usuários
+- 👥 Registro e aprovação de usuários
+- 👮‍♂️ Diferentes níveis de acesso:
+  - Administrador: Acesso total ao sistema
+  - Funcionário: Acesso às funcionalidades internas
+  - Cliente: Acesso à área do cliente
+  - Fornecedor: Acesso ao portal de fornecedores
+- 🖼️ Perfil de usuário com avatar
+- 🔔 Sistema de notificações
+
+#### Painel Administrativo
+- 📊 Dashboard com métricas importantes
+- 👥 Gestão completa de usuários
+- 📝 Logs de atividades do sistema
+- ⚙️ Configurações do sistema
+
+### 💾 Banco de Dados
+- SQLite para facilitar instalação
+- Migrations para versionamento
+- Seeds para dados iniciais
+- Backup automático diário
+
+## 🔧 Requisitos
+
+- PHP 7.4 ou superior
+- Extensões PHP necessárias:
+  - PDO SQLite
+  - GD (para manipulação de imagens)
+  - OpenSSL (para criptografia)
+  - Fileinfo (para upload de arquivos)
+- Servidor web (Apache/Nginx) ou PHP built-in server
+- Permissões de escrita nos diretórios:
+  - /data
+  - /uploads
+  - /logs
+
+## 🚀 Instalação
 
 1. Clone o repositório:
     ```bash
-    git clone https://github.com/SEU_USUARIO/php-learning-project.git
-    cd php-learning-project
+    git clone https://github.com/EduradoPessoa/php-site.git
+    cd php-site
     ```
-   
-2. Inicie o servidor PHP:
+
+2. Configure as permissões:
     ```bash
-    php -S localhost:8000 -t public
+    chmod 777 data uploads logs
     ```
 
-3. Acesse no navegador:
-    ```plaintext
-    http://localhost:8000
+3. Execute as migrations:
+    ```bash
+    php database/migrate.php
     ```
 
-👤 **Credenciais do Admin**  
-Mude isso no programa php-site/config/database.php (linhas 32 e 33)
+4. Inicie o servidor:
+    ```bash
+    php -S localhost:8888 -t public
+    ```
 
-Email: eduardo@phoenyx.com.br  
-Senha: 123456
+5. Acesse no navegador:
+    ```
+    http://localhost:8888
+    ```
 
-## 🤝 Como Contribuir
+## 👤 Credenciais Iniciais
 
-Sua contribuição é muito bem-vinda! Aqui estão algumas formas de participar:
+**Administrador**
+- Email: eduardo@phoenyx.com.br
+- Senha: 123456
 
-### 🌟 Ideias para Contribuição
+## 📁 Estrutura do Projeto
 
-- Novas Funcionalidades
-  - Sistema de recuperação de senha
-  - Perfil de usuário com avatar
-  - Painel administrativo mais completo
-  - Sistema de notificações
-
-- Melhorias
-  - Implementar validações mais robustas
-  - Adicionar testes automatizados
-  - Melhorar a interface do usuário
-  - Implementar cache de consultas
-
-- Documentação
-  - Melhorar a documentação existente
-  - Adicionar comentários no código
-  - Criar guias de contribuição
-  - Documentar APIs
-
-### 📝 Processo de Contribuição
-
-1. Faça um Fork do projeto
-2. Crie uma branch para sua feature (git checkout -b feature/AmazingFeature)
-3. Commit suas mudanças (git commit -m 'Add: nova funcionalidade')
-4. Push para a branch (git push origin feature/AmazingFeature)
-5. Abra um Pull Request
-
-## 🛠️ Tecnologias Utilizadas
-
-- PHP 8.x
-- SQLite
-- Bootstrap 5
-- HTML5/CSS3
-- JavaScript
-
-## 📚 Estrutura do Projeto
-```php-learning-project/
-    ├── admin/ # Área administrativa
-    ├── config/ # Configurações do sistema
-    ├── data/ # Banco de dados SQLite
-    ├── includes/ # Arquivos compartilhados
-    ├── public/ # Arquivos públicos
-    │ ├── assets/ # CSS, JS, imagens
-    │ └── index.php # Ponto de entrada
-    └── README.md # Este arquivo
+```
+php-site/
+├── admin/              # Área administrativa
+├── config/             # Configurações
+│   ├── config.php     # Configurações gerais
+│   └── database.php   # Configuração do banco
+├── data/              # Dados do sistema
+│   └── database.sqlite # Banco SQLite
+├── database/          # Gerenciamento do banco
+│   ├── migrations/    # Migrações
+│   └── seeds/        # Seeds
+├── includes/          # Arquivos incluídos
+│   ├── auth.php      # Autenticação
+│   └── functions.php # Funções úteis
+├── logs/             # Logs do sistema
+├── public/           # Arquivos públicos
+│   ├── css/         # Estilos
+│   ├── js/          # Scripts
+│   └── uploads/     # Uploads públicos
+└── src/              # Código fonte
+    ├── Controllers/  # Controladores
+    ├── Models/       # Modelos
+    └── Utils/        # Utilitários
 ```
 
-## 📖 Aprendizados Abordados
+## 🤝 Contribuição
 
-- Autenticação e Autorização
-- Segurança em PHP
-- Manipulação de Banco de Dados
-- Estruturação de Projetos
-- Boas Práticas de Codificação
-- Controle de Versão com Git
+1. Fork o projeto
+2. Crie sua branch: `git checkout -b feature/nova-funcionalidade`
+3. Commit suas mudanças: `git commit -m 'Adiciona nova funcionalidade'`
+4. Push para a branch: `git push origin feature/nova-funcionalidade`
+5. Abra um Pull Request
 
-## 📄 Licença
+## 📝 Changelog
 
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+### v1.1.0 (Em desenvolvimento)
+- Sistema de notificações
+- Upload de avatar
+- Recuperação de senha
+- Proteção CSRF
+- Rate limiting
+- Sistema de logs
 
-## 🤝 Comunidade
+### v1.0.0
+- Sistema base
+- Autenticação
+- Controle de acesso
+- Gestão de usuários
 
-- Junte-se às discussões na aba Issues
-- Compartilhe suas ideias nas Discussions
-- Participe do desenvolvimento através de Pull Requests
+## 📜 Licença
 
-⭐️ Se este projeto te ajudou, considere dar uma estrela!
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-Desenvolvido com ❤️ pela comunidade PHP
+## 👨‍💻 Autor
+
+Eduardo Pessoa
+- GitHub: [@EduradoPessoa](https://github.com/EduradoPessoa)
+- Email: eduardo@phoenyx.com.br
