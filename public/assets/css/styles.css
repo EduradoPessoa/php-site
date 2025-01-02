@@ -92,6 +92,24 @@ body {
     text-align: center;
 }
 
+.sidebar .nav-link[data-bs-toggle="collapse"] {
+    position: relative;
+}
+
+.sidebar .nav-link[data-bs-toggle="collapse"] i.bi-chevron-down {
+    transition: transform 0.35s ease;
+    position: absolute;
+    right: 1rem;
+}
+
+.sidebar .nav-link[data-bs-toggle="collapse"][aria-expanded="true"] i.bi-chevron-down {
+    transform: rotate(-180deg);
+}
+
+.sidebar .collapse .nav-link {
+    padding-left: 2.5rem;
+}
+
 .user-profile {
     border-bottom: 1px solid rgba(0, 0, 0, .1);
 }

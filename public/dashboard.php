@@ -1,6 +1,5 @@
 <?php
 require_once '../config/config.php';
-require_once '../config/database.php';
 require_once '../includes/auth.php';
 
 $auth = Auth::getInstance();
@@ -45,49 +44,7 @@ require_once '../includes/header.php';
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-            <div class="position-sticky pt-3">
-                <div class="user-profile mb-4 p-3">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-person-circle fs-1 me-2"></i>
-                        <div>
-                            <h6 class="mb-0"><?= htmlspecialchars($user['name']) ?></h6>
-                            <small class="text-muted"><?= htmlspecialchars($user['email']) ?></small>
-                        </div>
-                    </div>
-                </div>
-
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="dashboard.php">
-                            <i class="bi bi-speedometer2"></i> Dashboard
-                        </a>
-                    </li>
-                    <?php if ($auth->hasRole('admin')): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin/users.php">
-                            <i class="bi bi-people"></i> Usuários
-                        </a>
-                    </li>
-                    <?php endif; ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="profile.php">
-                            <i class="bi bi-person"></i> Meu Perfil
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="settings.php">
-                            <i class="bi bi-gear"></i> Configurações
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-danger" href="logout.php">
-                            <i class="bi bi-box-arrow-right"></i> Sair
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <?php require_once '../includes/sidebar.php'; ?>
 
         <!-- Main content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -175,39 +132,52 @@ require_once '../includes/header.php';
             <?php else: ?>
             <!-- User Dashboard -->
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title">
-                                <i class="bi bi-person-badge"></i> Meu Perfil
+                                <i class="bi bi-cart3"></i> Módulo de Compras
                             </h5>
-                            <div class="mt-4">
-                                <p><strong>Nome:</strong> <?= htmlspecialchars($user['name']) ?></p>
-                                <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
-                                <p><strong>Membro desde:</strong> <?= date('d/m/Y', strtotime($user['created_at'])) ?></p>
-                            </div>
-                            <a href="profile.php" class="btn btn-primary mt-3">
-                                <i class="bi bi-pencil"></i> Editar Perfil
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-gear"></i> Configurações Rápidas
-                            </h5>
-                            <div class="list-group mt-4">
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-bell"></i> Notificações
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-shield-lock"></i> Segurança
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-palette"></i> Aparência
-                                </a>
+                            <div class="row mt-4">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h6 class="card-title">
+                                                <i class="bi bi-box-seam"></i> Produtos
+                                            </h6>
+                                            <p class="card-text">Gerencie o cadastro de produtos.</p>
+                                            <a href="products/" class="btn btn-primary">
+                                                <i class="bi bi-arrow-right"></i> Acessar
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h6 class="card-title">
+                                                <i class="bi bi-building"></i> Fornecedores
+                                            </h6>
+                                            <p class="card-text">Gerencie seus fornecedores.</p>
+                                            <a href="suppliers/" class="btn btn-primary">
+                                                <i class="bi bi-arrow-right"></i> Acessar
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h6 class="card-title">
+                                                <i class="bi bi-clipboard-check"></i> Pedidos
+                                            </h6>
+                                            <p class="card-text">Gerencie pedidos de compra.</p>
+                                            <a href="purchase-orders/" class="btn btn-primary">
+                                                <i class="bi bi-arrow-right"></i> Acessar
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
