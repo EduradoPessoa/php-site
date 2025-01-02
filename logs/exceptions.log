@@ -1,0 +1,2 @@
+2025-01-01 23:40:05 [Exception] Call to undefined function isAuthenticated() in /home/epessoa/Documentos/Sistemas/php-site/public/login.php on line 7
+2025-01-01 23:40:10 [Exception] Call to undefined function isAuthenticated() in /home/epessoa/Documentos/Sistemas/php-site/public/index.php on line 7

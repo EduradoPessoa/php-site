@@ -3,8 +3,10 @@ require_once '../config/config.php';
 require_once '../config/database.php';
 require_once '../includes/auth.php';
 
+$auth = Auth::getInstance();
+
 // Redireciona usuários já logados para o dashboard
-if (isAuthenticated()) {
+if ($auth->isAuthenticated()) {
     header('Location: dashboard.php');
     exit;
 }

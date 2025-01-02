@@ -5,6 +5,7 @@ require_once '../includes/auth.php';
 
 $auth = Auth::getInstance();
 $error = '';
+$success = '';
 
 // Redireciona usuários já logados
 if ($auth->isAuthenticated()) {
@@ -12,7 +13,7 @@ if ($auth->isAuthenticated()) {
     exit;
 }
 
-// Processa o login
+// Processa a solicitação
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if (!isset($_POST['csrf_token']) || !validateToken($_POST['csrf_token'])) {
@@ -20,19 +21,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-        $password = $_POST['password'] ?? '';
-
         if (!$email) {
             throw new Exception('Email inválido');
         }
 
-        if (empty($password)) {
-            throw new Exception('Senha é obrigatória');
+        $token = $auth->requestPasswordReset($email);
+        
+        // TODO: Implementar envio de email
+        // Por enquanto, apenas mostra o token (apenas para desenvolvimento)
+        if (!isProduction()) {
+            $success = "Token gerado (apenas para desenvolvimento): " . $token;
+        } else {
+            $success = "Se o email existir em nossa base, você receberá as instruções para redefinir sua senha.";
         }
-
-        $auth->login($email, $password);
-        header('Location: dashboard.php');
-        exit;
 
     } catch (Exception $e) {
         $error = $e->getMessage();
@@ -50,44 +51,33 @@ require_once '../includes/header.php';
         <div class="col-md-6 col-lg-5">
             <div class="card shadow-sm">
                 <div class="card-body p-5">
-                    <h1 class="text-center mb-4">Login</h1>
+                    <h1 class="text-center mb-4">Recuperar Senha</h1>
                     
                     <?php if ($error): ?>
                         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
                     <?php endif; ?>
 
+                    <?php if ($success): ?>
+                        <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+                    <?php endif; ?>
+
                     <form method="post" action="">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" 
                                    value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                                    <label class="form-check-label" for="remember">Lembrar-me</label>
-                                </div>
-                                <a href="forgot-password.php">Esqueceu a senha?</a>
+                            <div class="form-text">
+                                Digite o email associado à sua conta. Você receberá um link para redefinir sua senha.
                             </div>
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Entrar</button>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Enviar Link de Recuperação</button>
+                            <a href="login.php" class="btn btn-outline-secondary">Voltar para Login</a>
                         </div>
                     </form>
-
-                    <div class="text-center mt-4">
-                        <p class="mb-0">Não tem uma conta? <a href="register.php">Registre-se</a></p>
-                    </div>
                 </div>
             </div>
         </div>
