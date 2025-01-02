@@ -2,3 +2,12 @@
 2025-01-01 23:40:10 [Exception] Call to undefined function isAuthenticated() in /home/epessoa/Documentos/Sistemas/php-site/public/index.php on line 7
 2025-01-01 23:42:48 [Exception] Call to undefined function isAuthenticated() in /home/epessoa/Documentos/Sistemas/php-site/includes/header.php on line 19
 2025-01-01 23:42:53 [Exception] Call to undefined function isAuthenticated() in /home/epessoa/Documentos/Sistemas/php-site/includes/header.php on line 19
+2025-01-01 23:45:37 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
+2025-01-01 23:46:20 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
+2025-01-01 23:46:23 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
+2025-01-01 23:46:24 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
+2025-01-01 23:46:25 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
+2025-01-01 23:46:25 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
+2025-01-01 23:46:26 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
+2025-01-01 23:46:30 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
+2025-01-01 23:46:39 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
