@@ -16,11 +16,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <?php if (isAuthenticated()): ?>
+                <?php 
+                $auth = Auth::getInstance();
+                if ($auth->isAuthenticated()): 
+                ?>
                     <li class="nav-item">
                         <a class="nav-link" href="/dashboard.php">Dashboard</a>
                     </li>
-                    <?php if ($_SESSION['user_role'] === 'admin'): ?>
+                    <?php if ($auth->hasRole('admin')): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="/admin/">Admin</a>
                         </li>
@@ -33,11 +36,25 @@
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white" href="/login.php">Login</a>
+                        <a class="nav-link" href="/login.php">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register.php">Registrar</a>
                     </li>
                 <?php endif; ?>
             </ul>
         </div>
     </div>
 </nav>
+
 <div class="container mt-4">
+    <?php if (isset($_SESSION['flash_message'])): ?>
+        <div class="alert alert-<?= $_SESSION['flash_type'] ?? 'info' ?> alert-dismissible fade show">
+            <?= $_SESSION['flash_message'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <?php 
+        unset($_SESSION['flash_message']);
+        unset($_SESSION['flash_type']);
+        ?>
+    <?php endif; ?>
