@@ -11,3 +11,4 @@
 2025-01-01 23:46:26 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
 2025-01-01 23:46:30 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
 2025-01-01 23:46:39 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
+2025-01-01 23:52:28 [Exception] Call to undefined function isAuthenticated() in /home/epessoa/Documentos/Sistemas/php-site/public/register.php on line 6

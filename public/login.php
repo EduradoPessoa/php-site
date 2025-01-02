@@ -15,10 +15,7 @@ if ($auth->isAuthenticated()) {
 // Processa o login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        if (!isset($_POST['csrf_token']) || !validateToken($_POST['csrf_token'])) {
-            throw new Exception('Token de segurança inválido');
-        }
-
+        // Validação básica
         $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
         $password = $_POST['password'] ?? '';
 
@@ -30,7 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('Senha é obrigatória');
         }
 
+        // Tenta fazer login
         $auth->login($email, $password);
+        
+        // Se chegou aqui, login foi bem sucedido
+        $_SESSION['flash_message'] = 'Bem-vindo de volta!';
+        $_SESSION['flash_type'] = 'success';
+        
         header('Location: dashboard.php');
         exit;
 
@@ -38,9 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = $e->getMessage();
     }
 }
-
-// Gera token CSRF
-$_SESSION['csrf_token'] = generateToken();
 
 require_once '../includes/header.php';
 ?>
@@ -56,18 +56,32 @@ require_once '../includes/header.php';
                         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
                     <?php endif; ?>
 
-                    <form method="post" action="">
-                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                        
+                    <form method="post" action="" class="needs-validation" novalidate>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" 
-                                   value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor, informe um email válido.
+                            </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="password" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor, informe sua senha.
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -80,14 +94,15 @@ require_once '../includes/header.php';
                             </div>
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Entrar</button>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-box-arrow-in-right"></i> Entrar
+                            </button>
+                            <a href="register.php" class="btn btn-outline-secondary">
+                                <i class="bi bi-person-plus"></i> Criar Nova Conta
+                            </a>
                         </div>
                     </form>
-
-                    <div class="text-center mt-4">
-                        <p class="mb-0">Não tem uma conta? <a href="register.php">Registre-se</a></p>
-                    </div>
                 </div>
             </div>
         </div>
