@@ -1,13 +1,15 @@
 <?php
-$dbPath = __DIR__ . '/../data/database.sqlite';
-$dbDir = dirname($dbPath);
-
-if (!file_exists($dbDir)) {
-    mkdir($dbDir, 0777, true);
-}
+require_once __DIR__ . '/config.php';
 
 try {
-    $pdo = new PDO("sqlite:$dbPath");
+    // Criar diretório se não existir
+    $dbDir = dirname(DB_PATH);
+    if (!file_exists($dbDir)) {
+        mkdir($dbDir, 0777, true);
+    }
+
+    // Conectar ao banco
+    $pdo = new PDO("sqlite:" . DB_PATH);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Criar tabelas se não existirem
@@ -16,25 +18,49 @@ try {
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         name TEXT NOT NULL,
-        role TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'user',
         status INTEGER DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )");
 
-    // Remover usuário admin existente para recriar
-    $pdo->exec("DELETE FROM users WHERE email = 'eduardo@phoenyx.com.br'");
-    
-    // Criar usuário admin
-    $stmt = $pdo->prepare("INSERT INTO users (email, password, name, role, status) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([
-        'eduardo@phoenyx.com.br',
-        password_hash('123456', PASSWORD_DEFAULT),
-        'Eduardo',
-        'admin',
-        1
-    ]);
+    $pdo->exec("CREATE TABLE IF NOT EXISTS activity_logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        action TEXT NOT NULL,
+        description TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )");
+
+    $pdo->exec("CREATE TABLE IF NOT EXISTS password_resets (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        token TEXT NOT NULL,
+        expires_at DATETIME NOT NULL,
+        used INTEGER DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )");
+
+    // Criar usuário admin se não existir
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt->execute(['eduardo@phoenyx.com.br']);
+    if (!$stmt->fetch()) {
+        $stmt = $pdo->prepare("
+            INSERT INTO users (email, password, name, role, status)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $stmt->execute([
+            'eduardo@phoenyx.com.br',
+            password_hash('123456', PASSWORD_DEFAULT),
+            'Eduardo',
+            'admin',
+            1
+        ]);
+    }
 
 } catch(PDOException $e) {
-    die("Erro na conexão com o banco de dados: " . $e->getMessage());
+    error_log("Erro no banco de dados: " . $e->getMessage());
+    die("Erro na conexão com o banco de dados. Por favor, tente novamente mais tarde.");
 }

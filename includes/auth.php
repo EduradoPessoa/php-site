@@ -20,61 +20,40 @@ class Auth {
     }
     
     public function login($email, $password) {
-        // Verificar rate limiting
-        if ($this->isRateLimited($email)) {
-            throw new Exception('Muitas tentativas de login. Tente novamente em 5 minutos.');
+        try {
+            // Verificar rate limiting
+            if ($this->isRateLimited($email)) {
+                throw new Exception('Muitas tentativas de login. Tente novamente em 5 minutos.');
+            }
+            
+            // Buscar usuário
+            $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = ? AND status = 1');
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Verificar senha
+            if (!$user || !password_verify($password, $user['password'])) {
+                $this->recordLoginAttempt($email);
+                throw new Exception('Email ou senha inválidos.');
+            }
+            
+            // Limpar tentativas de login
+            unset($this->loginAttempts[$email]);
+            
+            // Iniciar sessão
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_role'] = $user['role'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['last_activity'] = time();
+            
+            // Registrar log
+            $this->logActivity($user['id'], 'login', 'Login bem-sucedido');
+            
+            return true;
+        } catch (Exception $e) {
+            error_log("Erro no login: " . $e->getMessage());
+            throw $e;
         }
-        
-        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = ? AND status = 1');
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if (!$user || !password_verify($password, $user['password'])) {
-            $this->recordLoginAttempt($email);
-            throw new Exception('Email ou senha inválidos.');
-        }
-        
-        // Limpar tentativas de login
-        unset($this->loginAttempts[$email]);
-        
-        // Iniciar sessão
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_role'] = $user['role'];
-        $_SESSION['user_name'] = $user['name'];
-        $_SESSION['last_activity'] = time();
-        
-        // Registrar log
-        $this->logActivity($user['id'], 'login', 'Login bem-sucedido');
-        
-        return $user;
-    }
-    
-    public function register($data) {
-        // Validar dados
-        $this->validateRegistrationData($data);
-        
-        // Verificar email único
-        $stmt = $this->pdo->prepare('SELECT id FROM users WHERE email = ?');
-        $stmt->execute([$data['email']]);
-        if ($stmt->fetch()) {
-            throw new Exception('Este email já está cadastrado.');
-        }
-        
-        // Criar usuário
-        $stmt = $this->pdo->prepare('
-            INSERT INTO users (name, email, password, role, status, created_at)
-            VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-        ');
-        
-        $stmt->execute([
-            $data['name'],
-            $data['email'],
-            password_hash($data['password'], PASSWORD_DEFAULT),
-            $data['role'] ?? 'user',
-            0 // Aguardando aprovação
-        ]);
-        
-        return $this->pdo->lastInsertId();
     }
     
     public function logout() {
@@ -115,74 +94,6 @@ class Auth {
         return $this->isAuthenticated() && $_SESSION['user_role'] === $role;
     }
     
-    public function requestPasswordReset($email) {
-        $stmt = $this->pdo->prepare('SELECT id FROM users WHERE email = ? AND status = 1');
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if (!$user) {
-            throw new Exception('Email não encontrado.');
-        }
-        
-        $token = generateToken();
-        $expiry = date('Y-m-d H:i:s', time() + TOKEN_LIFETIME);
-        
-        $stmt = $this->pdo->prepare('
-            INSERT INTO password_resets (user_id, token, expires_at)
-            VALUES (?, ?, ?)
-        ');
-        $stmt->execute([$user['id'], $token, $expiry]);
-        
-        // Enviar email (implementar depois)
-        return $token;
-    }
-    
-    public function resetPassword($token, $newPassword) {
-        $stmt = $this->pdo->prepare('
-            SELECT user_id FROM password_resets
-            WHERE token = ? AND expires_at > CURRENT_TIMESTAMP
-            AND used = 0
-        ');
-        $stmt->execute([$token]);
-        $reset = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if (!$reset) {
-            throw new Exception('Token inválido ou expirado.');
-        }
-        
-        // Atualizar senha
-        $stmt = $this->pdo->prepare('
-            UPDATE users SET password = ? WHERE id = ?
-        ');
-        $stmt->execute([
-            password_hash($newPassword, PASSWORD_DEFAULT),
-            $reset['user_id']
-        ]);
-        
-        // Marcar token como usado
-        $stmt = $this->pdo->prepare('
-            UPDATE password_resets SET used = 1
-            WHERE token = ?
-        ');
-        $stmt->execute([$token]);
-        
-        $this->logActivity($reset['user_id'], 'password_reset', 'Senha alterada com sucesso');
-    }
-    
-    private function validateRegistrationData($data) {
-        if (empty($data['name']) || strlen($data['name']) < 3) {
-            throw new Exception('Nome deve ter pelo menos 3 caracteres.');
-        }
-        
-        if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new Exception('Email inválido.');
-        }
-        
-        if (empty($data['password']) || strlen($data['password']) < PASSWORD_MIN_LENGTH) {
-            throw new Exception('Senha deve ter pelo menos ' . PASSWORD_MIN_LENGTH . ' caracteres.');
-        }
-    }
-    
     private function isRateLimited($email) {
         if (!isset($this->loginAttempts[$email])) {
             return false;
@@ -203,17 +114,15 @@ class Auth {
         $this->loginAttempts[$email][] = time();
     }
     
-    private function logActivity($userId, $action, $description) {
-        $stmt = $this->pdo->prepare('
-            INSERT INTO activity_logs (user_id, action, description, ip_address)
-            VALUES (?, ?, ?, ?)
-        ');
-        
-        $stmt->execute([
-            $userId,
-            $action,
-            $description,
-            $_SERVER['REMOTE_ADDR'] ?? null
-        ]);
+    private function logActivity($userId, $action, $description = '') {
+        try {
+            $stmt = $this->pdo->prepare('
+                INSERT INTO activity_logs (user_id, action, description)
+                VALUES (?, ?, ?)
+            ');
+            $stmt->execute([$userId, $action, $description]);
+        } catch (Exception $e) {
+            error_log("Erro ao registrar atividade: " . $e->getMessage());
+        }
     }
 }
