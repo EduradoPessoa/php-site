@@ -1,0 +1,36 @@
+2025-01-01 23:48:21 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 26
+2025-01-01 23:48:21 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 26
+2025-01-01 23:48:21 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 27
+2025-01-01 23:48:21 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 27
+2025-01-01 23:48:21 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 28
+2025-01-01 23:48:21 [8192] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 28
+2025-01-01 23:48:21 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 29
+2025-01-01 23:48:21 [8192] strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 29
+2025-01-01 23:48:21 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 92
+2025-01-01 23:48:24 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 26
+2025-01-01 23:48:24 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 26
+2025-01-01 23:48:24 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 27
+2025-01-01 23:48:24 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 27
+2025-01-01 23:48:24 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 28
+2025-01-01 23:48:24 [8192] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 28
+2025-01-01 23:48:24 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 29
+2025-01-01 23:48:24 [8192] strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 29
+2025-01-01 23:48:24 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 92
+2025-01-01 23:48:25 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 26
+2025-01-01 23:48:25 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 26
+2025-01-01 23:48:25 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 27
+2025-01-01 23:48:25 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 27
+2025-01-01 23:48:25 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 28
+2025-01-01 23:48:25 [8192] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 28
+2025-01-01 23:48:25 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 29
+2025-01-01 23:48:25 [8192] strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 29
+2025-01-01 23:48:25 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 92
+2025-01-01 23:48:42 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 26
+2025-01-01 23:48:42 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 26
+2025-01-01 23:48:42 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 27
+2025-01-01 23:48:42 [8192] htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 27
+2025-01-01 23:48:42 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 28
+2025-01-01 23:48:42 [8192] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 28
+2025-01-01 23:48:42 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 29
+2025-01-01 23:48:42 [8192] strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 29
+2025-01-01 23:48:42 [2] Trying to access array offset on false in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 92

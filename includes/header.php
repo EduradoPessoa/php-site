@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= SITE_NAME ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
     <link href="/assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
+    <div class="container-fluid">
         <a class="navbar-brand" href="/"><?= SITE_NAME ?></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -21,25 +22,42 @@
                 if ($auth->isAuthenticated()): 
                 ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/dashboard.php">Dashboard</a>
+                        <a class="nav-link" href="/dashboard.php">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
                     </li>
                     <?php if ($auth->hasRole('admin')): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/">Admin</a>
+                            <a class="nav-link" href="/admin/">
+                                <i class="bi bi-gear"></i> Admin
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/pending_users.php">Usuários Pendentes</a>
+                            <a class="nav-link" href="/admin/pending_users.php">
+                                <i class="bi bi-people"></i> Usuários
+                            </a>
                         </li>
                     <?php endif; ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout.php">Sair</a>
+                        <a class="nav-link" href="/profile.php">
+                            <i class="bi bi-person"></i> Perfil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout.php">
+                            <i class="bi bi-box-arrow-right"></i> Sair
+                        </a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login.php">Login</a>
+                        <a class="nav-link" href="/login.php">
+                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/register.php">Registrar</a>
+                        <a class="nav-link" href="/register.php">
+                            <i class="bi bi-person-plus"></i> Registrar
+                        </a>
                     </li>
                 <?php endif; ?>
             </ul>
@@ -47,7 +65,7 @@
     </div>
 </nav>
 
-<div class="container mt-4">
+<div class="container-fluid mt-4">
     <?php if (isset($_SESSION['flash_message'])): ?>
         <div class="alert alert-<?= $_SESSION['flash_type'] ?? 'info' ?> alert-dismissible fade show">
             <?= $_SESSION['flash_message'] ?>
