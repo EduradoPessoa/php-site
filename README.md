@@ -31,6 +31,32 @@ Este sistema implementa uma plataforma completa de gestão empresarial com auten
 - 📝 Logs de atividades do sistema
 - ⚙️ Configurações do sistema
 
+#### Módulo de Compras
+- 📦 Gestão de Produtos
+  - Cadastro e manutenção de produtos
+  - Controle de estoque mínimo e máximo
+  - Histórico de preços
+  
+- 🏢 Gestão de Fornecedores
+  - Cadastro completo de fornecedores
+  - Documentação e contatos
+  - Histórico de compras
+  
+- 🔗 Produtos x Fornecedores
+  - Vinculação de produtos e fornecedores
+  - Códigos de produto do fornecedor
+  - Preços e condições por fornecedor
+  
+- 📝 Pedidos de Compra
+  - Geração de pedidos
+  - Aprovação em múltiplos níveis
+  - Acompanhamento de status
+  
+- 📄 Notas Fiscais
+  - Entrada de notas fiscais
+  - Vinculação com pedidos
+  - Atualização automática de estoque
+
 ### 💾 Banco de Dados
 - SQLite para facilitar instalação
 - Migrations para versionamento
@@ -99,49 +125,16 @@ php-site/
 │   ├── migrations/    # Migrações
 │   └── seeds/        # Seeds
 ├── includes/          # Arquivos incluídos
-│   ├── auth.php      # Autenticação
-│   └── functions.php # Funções úteis
-├── logs/             # Logs do sistema
-├── public/           # Arquivos públicos
-│   ├── css/         # Estilos
-│   ├── js/          # Scripts
-│   └── uploads/     # Uploads públicos
-└── src/              # Código fonte
+├── logs/              # Logs do sistema
+├── public/            # Arquivos públicos
+│   ├── assets/       # CSS, JS, imagens
+│   └── uploads/      # Uploads de usuários
+└── src/               # Código fonte
     ├── Controllers/  # Controladores
     ├── Models/       # Modelos
-    └── Utils/        # Utilitários
+    └── Views/        # Visualizações
 ```
 
-## 🤝 Contribuição
-
-1. Fork o projeto
-2. Crie sua branch: `git checkout -b feature/nova-funcionalidade`
-3. Commit suas mudanças: `git commit -m 'Adiciona nova funcionalidade'`
-4. Push para a branch: `git push origin feature/nova-funcionalidade`
-5. Abra um Pull Request
-
-## 📝 Changelog
-
-### v1.1.0 (Em desenvolvimento)
-- Sistema de notificações
-- Upload de avatar
-- Recuperação de senha
-- Proteção CSRF
-- Rate limiting
-- Sistema de logs
-
-### v1.0.0
-- Sistema base
-- Autenticação
-- Controle de acesso
-- Gestão de usuários
-
-## 📜 Licença
+## 📝 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 👨‍💻 Autor
-
-Eduardo Pessoa
-- GitHub: [@EduradoPessoa](https://github.com/EduradoPessoa)
-- Email: eduardo@phoenyx.com.br
