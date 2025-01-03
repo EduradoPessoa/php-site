@@ -26,7 +26,7 @@ class Auth {
             }
             
             // Buscar usuário
-            $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = ? AND status = 1');
+            $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = ? AND active = 1');
             $stmt->execute([$email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
@@ -45,52 +45,11 @@ class Auth {
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['last_activity'] = time();
             
-            // Registrar log
-            $this->logActivity($user['id'], 'login', 'Login bem-sucedido');
-            
             return true;
+            
         } catch (Exception $e) {
-            error_log("Erro no login: " . $e->getMessage());
             throw $e;
         }
-    }
-    
-    public function logout() {
-        if (isset($_SESSION['user_id'])) {
-            $this->logActivity($_SESSION['user_id'], 'logout', 'Logout realizado');
-        }
-        
-        session_destroy();
-        session_start();
-    }
-    
-    public function isAuthenticated() {
-        if (!isset($_SESSION['user_id'])) {
-            return false;
-        }
-        
-        // Verificar timeout da sessão
-        if (time() - $_SESSION['last_activity'] > SESSION_LIFETIME) {
-            $this->logout();
-            return false;
-        }
-        
-        $_SESSION['last_activity'] = time();
-        return true;
-    }
-    
-    public function getCurrentUser() {
-        if (!$this->isAuthenticated()) {
-            return null;
-        }
-        
-        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE id = ?');
-        $stmt->execute([$_SESSION['user_id']]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    
-    public function hasRole($role) {
-        return $this->isAuthenticated() && $_SESSION['user_role'] === $role;
     }
     
     private function isRateLimited($email) {
@@ -99,36 +58,82 @@ class Auth {
         }
         
         $attempts = $this->loginAttempts[$email];
-        if (count($attempts) < MAX_LOGIN_ATTEMPTS) {
+        if (count($attempts) < 5) {
             return false;
         }
         
-        $oldestAttempt = $attempts[0];
-        return (time() - $oldestAttempt) < LOGIN_TIMEOUT;
+        // Verificar se já passaram 5 minutos desde a última tentativa
+        $lastAttempt = end($attempts);
+        return (time() - $lastAttempt) < 300;
     }
     
     private function recordLoginAttempt($email) {
         if (!isset($this->loginAttempts[$email])) {
             $this->loginAttempts[$email] = [];
         }
-        
         $this->loginAttempts[$email][] = time();
+    }
+    
+    public function logout() {
+        if (isset($_SESSION['user_id'])) {
+            $this->logActivity($_SESSION['user_id'], 'logout', 'Logout realizado');
+        }
+        session_destroy();
+    }
+    
+    public function requireLogin() {
+        if (!$this->isLoggedIn()) {
+            header('Location: /login.php');
+            exit;
+        }
+        $this->checkSessionTimeout();
+    }
+    
+    public function isLoggedIn() {
+        return isset($_SESSION['user_id']);
+    }
+    
+    public function getCurrentUser() {
+        if (!$this->isLoggedIn()) {
+            return null;
+        }
         
-        // Manter apenas as últimas MAX_LOGIN_ATTEMPTS tentativas
-        if (count($this->loginAttempts[$email]) > MAX_LOGIN_ATTEMPTS) {
-            array_shift($this->loginAttempts[$email]);
+        try {
+            $stmt = $this->pdo->prepare('SELECT * FROM users WHERE id = ?');
+            $stmt->execute([$_SESSION['user_id']]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return null;
         }
     }
     
-    public function logActivity($userId, $action, $description) {
+    public function hasRole($role) {
+        return $this->isLoggedIn() && $_SESSION['user_role'] === $role;
+    }
+    
+    private function checkSessionTimeout() {
+        $timeout = 30 * 60; // 30 minutos
+        if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
+            $this->logout();
+            header('Location: /login.php?timeout=1');
+            exit;
+        }
+        $_SESSION['last_activity'] = time();
+    }
+    
+    private function logActivity($userId, $action, $description) {
         try {
-            $stmt = $this->pdo->prepare("
-                INSERT INTO activity_logs (user_id, action, description, created_at)
-                VALUES (?, ?, ?, CURRENT_TIMESTAMP)
-            ");
+            $stmt = $this->pdo->prepare('
+                INSERT INTO activity_logs (user_id, action, description)
+                VALUES (?, ?, ?)
+            ');
             $stmt->execute([$userId, $action, $description]);
         } catch (Exception $e) {
-            error_log("Erro ao registrar atividade: " . $e->getMessage());
+            error_log($e->getMessage());
         }
     }
 }
+
+// Inicializar a classe Auth
+$auth = Auth::getInstance();

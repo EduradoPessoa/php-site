@@ -5,7 +5,7 @@ require_once '../includes/auth.php';
 $auth = Auth::getInstance();
 
 // Verificar autenticação
-if (!$auth->isAuthenticated()) {
+if (!$auth->isLoggedIn()) {
     header('Location: login.php');
     exit;
 }
@@ -19,8 +19,8 @@ if ($auth->hasRole('admin')) {
     $stmt = $pdo->query("
         SELECT 
             COUNT(*) as total_users,
-            SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) as active_users,
-            SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as pending_users
+            SUM(CASE WHEN active = 1 THEN 1 ELSE 0 END) as active_users,
+            SUM(CASE WHEN active = 0 THEN 1 ELSE 0 END) as pending_users
         FROM users
     ");
     $stats = $stmt->fetch(PDO::FETCH_ASSOC);
