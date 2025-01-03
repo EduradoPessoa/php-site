@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../config/database.php';
 
 class Auth {
     private static $instance = null;
@@ -99,11 +98,13 @@ class Auth {
             return false;
         }
         
-        $attempts = array_filter($this->loginAttempts[$email], function($time) {
-            return $time > time() - LOGIN_TIMEOUT;
-        });
+        $attempts = $this->loginAttempts[$email];
+        if (count($attempts) < MAX_LOGIN_ATTEMPTS) {
+            return false;
+        }
         
-        return count($attempts) >= MAX_LOGIN_ATTEMPTS;
+        $oldestAttempt = $attempts[0];
+        return (time() - $oldestAttempt) < LOGIN_TIMEOUT;
     }
     
     private function recordLoginAttempt($email) {
@@ -112,14 +113,19 @@ class Auth {
         }
         
         $this->loginAttempts[$email][] = time();
+        
+        // Manter apenas as últimas MAX_LOGIN_ATTEMPTS tentativas
+        if (count($this->loginAttempts[$email]) > MAX_LOGIN_ATTEMPTS) {
+            array_shift($this->loginAttempts[$email]);
+        }
     }
     
-    private function logActivity($userId, $action, $description = '') {
+    public function logActivity($userId, $action, $description) {
         try {
-            $stmt = $this->pdo->prepare('
-                INSERT INTO activity_logs (user_id, action, description)
-                VALUES (?, ?, ?)
-            ');
+            $stmt = $this->pdo->prepare("
+                INSERT INTO activity_logs (user_id, action, description, created_at)
+                VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+            ");
             $stmt->execute([$userId, $action, $description]);
         } catch (Exception $e) {
             error_log("Erro ao registrar atividade: " . $e->getMessage());

@@ -16,10 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name']);
     $description = trim($_POST['description']);
     $unit = trim($_POST['unit']);
-    $price = str_replace(',', '.', $_POST['price']);
-    $min_stock = str_replace(',', '.', $_POST['min_stock']);
-    $max_stock = str_replace(',', '.', $_POST['max_stock']);
-    $current_stock = str_replace(',', '.', $_POST['current_stock']);
+    $price = str_replace(',', '.', trim($_POST['price']));
+    $min_stock = str_replace(',', '.', trim($_POST['min_stock']));
+    $max_stock = str_replace(',', '.', trim($_POST['max_stock']));
+    $current_stock = str_replace(',', '.', trim($_POST['current_stock']));
     $status = isset($_POST['status']) ? 1 : 0;
 
     // Validar campos obrigatórios
@@ -31,6 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!is_numeric($min_stock)) $errors[] = "O estoque mínimo deve ser um número válido";
     if (!is_numeric($max_stock)) $errors[] = "O estoque máximo deve ser um número válido";
     if (!is_numeric($current_stock)) $errors[] = "O estoque atual deve ser um número válido";
+
+    // Converter valores para float
+    $price = floatval($price);
+    $min_stock = floatval($min_stock);
+    $max_stock = floatval($max_stock);
+    $current_stock = floatval($current_stock);
 
     // Verificar se código já existe
     if (empty($errors)) {
@@ -44,22 +50,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Salvar no banco
     if (empty($errors)) {
         try {
-            $stmt = $pdo->prepare("
-                INSERT INTO products (
-                    code, name, description, unit, 
-                    price, min_stock, max_stock, current_stock, 
-                    status, created_at, updated_at
-                ) VALUES (
-                    ?, ?, ?, ?, 
-                    ?, ?, ?, ?,
-                    ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
-                )
-            ");
+            $sql = "INSERT INTO products (
+                code, name, description, unit, 
+                type, origin, manufacturer_id, price, 
+                min_stock, max_stock, current_stock, 
+                status, created_at, updated_at
+            ) VALUES (
+                :code, :name, :description, :unit,
+                :type, :origin, :manufacturer_id, :price,
+                :min_stock, :max_stock, :current_stock,
+                :status, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            )";
 
+            $stmt = $pdo->prepare($sql);
+            
             $stmt->execute([
-                $code, $name, $description, $unit,
-                $price, $min_stock, $max_stock, $current_stock,
-                $status
+                ':code' => $code,
+                ':name' => $name,
+                ':description' => $description,
+                ':unit' => $unit,
+                ':type' => 'commodity',
+                ':origin' => 'national',
+                ':manufacturer_id' => null,
+                ':price' => $price,
+                ':min_stock' => $min_stock,
+                ':max_stock' => $max_stock,
+                ':current_stock' => $current_stock,
+                ':status' => $status
             ]);
 
             // Registrar log
@@ -213,37 +230,38 @@ require_once '../../includes/header.php';
 // Validação do formulário
 (function () {
     'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = document.querySelectorAll('.needs-validation')
-    Array.prototype.slice.call(forms).forEach(function (form) {
-        form.addEventListener('submit', function (event) {
-            if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-            }
-            form.classList.add('was-validated')
-        }, false)
-    })
-})()
 
-// Formatação de números
-function formatNumber(input) {
-    let value = input.value.replace(/\D/g, '');
-    value = (parseInt(value) / 100).toFixed(2);
-    value = value.replace('.', ',');
-    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-    input.value = value;
-}
-
-// Aplicar formatação nos campos numéricos
-document.querySelectorAll('input[type="text"]').forEach(input => {
-    if (['price', 'min_stock', 'max_stock', 'current_stock'].includes(input.id)) {
-        input.addEventListener('input', () => formatNumber(input));
-        input.addEventListener('focus', () => {
-            input.value = input.value.replace(/\D/g, '');
-            input.value = (parseInt(input.value || 0) / 100).toFixed(2).replace('.', ',');
+    // Format number inputs
+    function formatNumber(input) {
+        input.addEventListener('input', function(e) {
+            let value = this.value;
+            value = value.replace(/\D/g, '');
+            value = value.replace(/(\d)(\d{2})$/, '$1,$2');
+            value = value.replace(/(?=(\d{3})+(\D))\B/g, '.');
+            this.value = value;
         });
     }
-});
+
+    // Format all number inputs
+    document.querySelectorAll('input[name="price"], input[name="min_stock"], input[name="max_stock"], input[name="current_stock"]')
+        .forEach(input => formatNumber(input));
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
 </script>
 
 <?php require_once '../../includes/footer.php'; ?>

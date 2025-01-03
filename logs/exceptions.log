@@ -12,3 +12,21 @@
 2025-01-01 23:46:30 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
 2025-01-01 23:46:39 [Exception] Call to undefined function requireAuth() in /home/epessoa/Documentos/Sistemas/php-site/public/dashboard.php on line 6
 2025-01-01 23:52:28 [Exception] Call to undefined function isAuthenticated() in /home/epessoa/Documentos/Sistemas/php-site/public/register.php on line 6
+2025-01-02 21:09:27 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:09:29 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:09:38 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:11:19 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:12:22 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:13:27 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:13:28 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:13:32 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:14:48 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:14:49 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:17:36 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:20:27 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:22:52 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:22:54 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:22:55 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:23:28 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:27:07 [Exception] SQLSTATE[HY000]: General error: 1 no such table: products in /home/epessoa/Documentos/Sistemas/php-site/public/products/index.php on line 14
+2025-01-02 21:48:12 [Exception] Call to private method Auth::logActivity() from global scope in /home/epessoa/Documentos/Sistemas/php-site/public/suppliers/create.php on line 78

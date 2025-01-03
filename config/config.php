@@ -34,8 +34,53 @@ define('BACKUP_RETENTION_DAYS', 7);
 // Timezone
 date_default_timezone_set('America/Sao_Paulo');
 
-// Inicialização da Sessão
-session_start();
+// Configurações de erro
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Configurações do banco de dados
+define('DB_FILE', __DIR__ . '/database.sqlite');
+
+try {
+    // Verificar se o arquivo do banco de dados existe
+    if (!file_exists(DB_FILE)) {
+        throw new Exception("Arquivo do banco de dados não encontrado em: " . DB_FILE);
+    }
+
+    // Verificar permissões do arquivo
+    if (!is_readable(DB_FILE)) {
+        throw new Exception("Arquivo do banco de dados não pode ser lido: " . DB_FILE);
+    }
+    if (!is_writable(DB_FILE)) {
+        throw new Exception("Arquivo do banco de dados não pode ser escrito: " . DB_FILE);
+    }
+
+    // Criar conexão PDO
+    $pdo = new PDO("sqlite:" . DB_FILE);
+    
+    // Configurar PDO para lançar exceções em caso de erro
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    // Habilitar chaves estrangeiras
+    $pdo->exec('PRAGMA foreign_keys = ON;');
+    
+    // Configurar para retornar resultados como array associativo
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    
+    // Configurar para converter zeros em string vazia
+    $pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
+    
+    // Configurar para não converter números em string
+    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+} catch (Exception $e) {
+    die("Erro na conexão com o banco de dados: " . $e->getMessage());
+}
+
+// Iniciar sessão se ainda não foi iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Funções de Utilidade
 function isProduction() {
@@ -95,7 +140,3 @@ function exceptionHandler($exception) {
     throw $exception;
 }
 set_exception_handler('exceptionHandler');
-
-// Configurações do Banco de Dados
-define('BASE_PATH', dirname(__DIR__));
-define('DB_PATH', BASE_PATH . '/database/portal.sqlite');

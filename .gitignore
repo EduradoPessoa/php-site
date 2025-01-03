@@ -1,0 +1,21 @@
+# Arquivos de banco de dados
+*.sqlite
+*.db
+
+# Logs
+*.log
+
+# Arquivos de configuração sensíveis
+config/database.php
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Dependências e diretórios do sistema
+/vendor/
+.env
+.env.*
+!.env.example
